@@ -32,9 +32,15 @@ class Say:
         os.system("say 'Task complete'")
 
     def linux(self, title, text):
-        os.system("beep")
-        os.system("paplay /usr/share/sounds/ubuntu/stereo/bell.ogg")
-        os.system("spd-say 'Task Complete'")
+        from shutil import which
+        if which("spd-say") is not None:
+            os.system("spd-say 'Task Complete'")
+        elif which("paplay") is not None and os.path.exists("/usr/share/sounds/ubuntu/stereo/bell.ogg"):
+            os.system("paplay /usr/share/sounds/ubuntu/stereo/bell.ogg")
+        elif which("paplay") is not None and os.path.exists("/usr/share/sounds/freedesktop/stereo/bell.oga"):
+            os.system("paplay /usr/share/sounds/freedesktop/stereo/bell.oga")
+        elif which("beep") is not None:
+            os.system("beep")
 
     def windows(self, title, text):
         try:
